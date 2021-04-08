@@ -1,0 +1,50 @@
+DBMS: 데이터를 모아놓고 관리하는 것
+
+Port번호: 하나의 방번호라고 생각하면 된다.(현재 port:3306)
+Root(User): 데이터베이스에 모든걸 관리하는 역할(현재:root)
+
+select version(); DBS가 가진 버전 함수
+
+ctrl + enter을 눌러서 한줄을 실행할 수 있으며, mySQL은 ;으로 끝난다.
+C:\Program Files\MySQL\MySQL Server 8.0\bin => 경로이다.
+내 pc => 오른쪽클릭해서 설정들어가기 => 고급시스템설정 => 환경변수 => 시스템 => path에 들어가서 새로만들기해서 위에 경로를 추가하고 확인 
+
+cmd에 들어가서 mysql -u root -p를 치고 엔터해서 비밀번호 눌러주기. -u(user라는 뜻), -p(password라는 뜻)
+show databases; 를 치면 메타베이스들을 볼 수 있다.
+
+mysql은 데이터베이스와 user가 별도로 위치해있다. 데이터베이스에 들어간다고 지정하지 않았으면 아무곳에 들어가지않은 것이다.
+use mysql 을 치면 mysql을 사용하는걸로 변경된다.
+
+workbench 혹은 cmd 편한걸 선택해서 보면 된다.
+
+create database 이름; => 이름을 설정해서 데이터베이스를 생성한다.
+
+* 이 공간에서만 사용할 유저를 생산하는 방법
+create user 이름@localhost identified by '암호';
+	        @ '%' => 모든 호스트라는 의미
+	        ip, localhost, 127.0.0.1 은 모두 같은 의미이다.			
+유저만 생성했다고 유저가 뭔가를 할 수는 없고, 권한이 있어야한다.
+
+* 권한을 부여하기
+grant all privileges on db이름.* to '이름'@'%' with grant option;
+
+*user 조회하기
+select user from mysql.user;
+pbldb test connection
+
+pbldb의 비밀번호는 pblpw이다.
+*파일을 불러와서 db에 저장하기
+mysql -u pbl -p pbldb < mysql_emp.txt
+	                   파일명을 입력
+엔터를 치면 비밀번호 입력이 나오니 비밀번호를 치면 등록된다.
+workbench에서 SHOW tables; 입력하면 테이블이 추가된 것을 확인할 수 있다.
+
+*문법을 확인하기
+https://www.w3schools.com/sql/default.asp
+
+일단 데이터베이스를 넣어야하기에 root계정으로 시작한것이다.
+.sql은 커리들이 들어있다고 생각하면 된다.
+
+
+
+				
