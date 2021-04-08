@@ -1,0 +1,137 @@
+DATABASE2
+
+--  employees 테이블에서 last_name이 acton인 사원의 이름, 성별, 입사일 출력
+-- UCASE, UPPER
+SELECT * FROM employees;
+SELECT Concat( first_name, ' ', last_name ), gender, hire_date FROM employees WHERE Upper(last_name) = 'ACTON';
+
+-- employees 테이블에서 1989년에 입사한 직원의 이름, 입사일을 출력
+-- substring DBMS는  인덱스가  1번부터  시작한다. 잘라내는  함수이다. (자를 인자, 몇번째에 자를건지, 어디까지 자를건지)를 적어야한다.
+SELECT Concat( first_name, ' ', last_name ), hire_date FROM employees WHERE Substring(hire_date, 1, 4) = '1989';
+
+-- salaries 테이블에서 2001년 급여가 70000불 이하의 직원만 사번, 급여로 출력하되 급여는 10자리로 부족한 자리수는 *로 표시
+-- LPAD, RPAD 어떤한 것으로 남는 자리를 채우는 역할, cast(salary as char)는 형변환을 뜻한다. 직접적으로 변경되지는않고 불러올떄만 변환.
+SELECT * FROM salaries;
+SELECT emp_no, LPAD( cast(salary as char), 10, '*') FROM salaries WHERE from_date like '2001-%' AND salary < 70000;
+
+-- salaries 테이블에 대한 LPAD 예제의 결과를 *생략하여 표시
+-- TRIM, LTRIM, RTRIM 공백을 제거한다. 중간에 공백은 제거되지않는다. leading : 좌측 공백 혹은 문자 제거 trailing : 우측 공백 혹은 문자 제거 both : 좌우 공백 혹은 문자 제거(기본)
+SELECT emp_no, TRIM(LEADING '*' FROM LPAD( cast(salary as char), 10, '*')) FROM salaries WHERE from_date like '2001-%' AND salary < 70000;
+
+-- ##숫자형 함수
+-- ABS(x) : x의 절대값을 구한다.
+SELECT ABS(2), ABS(-2);
+
+-- MOD(n,m) % : n을 m으로 나눈 나머지 값을 출력한다.
+SELECT MOD(234,10), 253 % 7, MOD(29,9);
+
+-- FLOOR(x) : x보다 크지 않은 가장 큰 정수를 반환한다. BIGINT로 자동 변환됨. 현재값보다 작은 수
+SELECT FLOOR(1.23), FLOOR(-1.23);
+
+-- CEILING(x) : x보다 작지 않은 가장 작은 정수를 반환한다. 현재값보다 큰 수 
+SELECT CEILING(1.23), CEILING(-1.23);
+
+-- ROUND(x) : x에 가장 근접한 정수를 반환한다. 1.50부터는 2에 가까운 숫자로
+SELECT ROUND(-1.23), ROUND(-1.58), ROUND(1.58), ROUND(1.50);
+
+-- ROUND(x,d) : x값 중에서 소수점 d자리에 가장 근접한 수로 반환한다.
+SELECT ROUND(1.298,1),ROUND(1.298,0);
+
+-- POW(x,y) POWER(x,y) : x의 y 제곱 승을 반환한다.
+SELECT POW(2,2),POWER(2,-2);
+
+-- SIGN(x) : x=음수이면 -1을, x=0이면 0을, x=양수이면 1을 출력한다.
+SELECT SIGN(-32), SIGN(0), SIGN(234);
+
+-- GREATEST(x,y,...) : 가장 큰 값을 반환한다.
+SELECT GREATEST(2,0),GREATEST(4.0,3.0,5.0),GREATEST("B","A","C");
+
+-- LEAST(x,y,...) : 가장 작은 값을 반환한다.
+SELECT LEAST(2,0),LEAST(34.0,3.0,5.0),LEAST("b","A","C");
+
+-- ##날짜형 함수
+-- CURDATE(),CURRENT_DATE : 오늘 날짜를 YYYY-MM-DD나 YYYYMMDD 형식으로 반환한다.
+SELECT CURDATE(), CURRENT_DATE;
+
+-- CURTIME() CURRENT_TIME : 현재 시각을 HH:MM:SS나 HHMMSS 형식으로 반환한다.
+SELECT CURTIME(), CURRENT_TIME;
+
+-- NOW() SYSDATE() CURRENT_TIMESTAMP : 오늘 현시각을 YYYY-MM-DD HH:MM:SS나 YYYYMMDDHHMMSS 형식으로 반환한다.
+SELECT NOW(),SYSDATE(),CURRENT_TIMESTAMP;
+
+-- DATE_FORMAT(date,format) : 입력된 date를 format 형식으로 반환한다
+SELECT DATE_FORMAT(CURDATE(),'%W %M %Y');
+SELECT DATE_FORMAT(CURDATE(),'%Y.%m.%d');
+
+-- PERIOD_DIFF(p1,p2) : YYMM이나 YYYYMM으로 표기되는 p1과 p2의 차이 개월을 반환 한다.
+SELECT concat(first_name, ' ', last_name) AS name,               
+PERIOD_DIFF( DATE_FORMAT(CURDATE(), '%Y%m'),  
+DATE_FORMAT(hire_date, '%Y%m') ) 
+FROM employees;
+
+-- DATE_ADD(date,INTERVAL expr type) DATE_SUB(date,INTERVAL expr type) 
+-- ADDDATE(date,INTERVAL expr type) SUBDATE(date,INTERVAL expr type) : 날짜 date에 type 형식으로 지정한 expr값을 더하거나 뺀다. 
+-- DATE_ADD()와 ADDDATE()는 같은 동작이고, DATE_SUB()와 SUBDATE()는 같은 의미이다.
+SELECT DATE_ADD(NOW(), INTERVAL 1 HOUR);
+SELECT DATE_ADD(NOW(), INTERVAL 1 DAY);
+-- 각 직원들은 입사 후 6개월이 지나면 근무평가를 한다. 각직원들에 이름, 입사일, 최초 근무평가일은 언제인지 출력
+SELECT * FROM employees;
+SELECT Concat( first_name, ' ', last_name ) AS 이름, hire_date AS 입사일, DATE_ADD(hire_date, INTERVAL 6 MONTH) AS 최초근무평가일 FROM employees;
+
+
+-- ##형 변환
+-- CAST 함수는 type을 변경(지정)하는데 유용하다. 출력할 떄 다른 타입으로 보고 싶을 때,사용할 수 있으며 실제로는 적용되지않는다. 
+-- CAST 함수의 사용법 :  CAST(expression AS type) 또는 CONVERT(expression,type)
+SELECT NOW();
+SELECT cast(now() AS DATE);
+select cast(1-2 as unsigned);
+
+-- ##그룹 함수
+-- salaries 테이블에서 사번이 10060인 직원의 급여 평균과 총합 계를 출력
+SELECT * FROM salaries;
+SELECT AVG(salary), SUM(salary) FROM salaries WHERE emp_no = '10060';
+-- 위 예제 직원의 최저 임금을 받은 시기와 최대 임금을  각 각 출력해보세요.
+SELECT from_date, to_date, salary from salaries WHERE emp_no = '10060' AND salary = 
+(SELECT max(salary) FROM salaries WHERE emp_no = '10060');
+-- dept_emp  테이블에서   d008에 근무하는 인원수는
+SELECT * FROM dept_emp;
+SELECT count(*) FROM dept_emp WHERE dept_no = 'd008';
+
+-- ##데이터 검색
+SELECT AVG(sal), deptno FROM emp GROUP BY deptno HAVING AVG(sal) > 2000;
+SELECT MAX(sal), job FROM emp GROUP BY job;
+-- 각 사원별로 평균연봉 출력
+SELECT * FROM emp;
+SELECT EMPNO, AVG(SAL) FROM emp GROUP BY EMPNO; 
+-- 각 현재 Manager 직책 사원에 대한 평균 연봉은? 
+SELECT JOB, AVG(SAL) FROM emp GROUP BY JOB;
+-- 급여가 5000이상 1500미만인 사원은 제외하고 JOB별로 평균 급여를 구하세요. 단, 잡별 평균급여가 2000미만인 잡은 제외하고
+-- HAVING 은 WHERE랑  비슷하지만,WHERE는  전체  데이터에서  한번  거르고 GROUPING된  후에  결과에서  조건을  가지고  싶으면  HAVING을  사용한다.
+SELECT JOB, AVG(sal) FROM emp WHERE sal <= 5000 and sal >1500 GROUP BY JOB HAVING AVG(sal) > 2000; 
+-- 사원별로 몇번의 직책이 바꼇는지 알고싶고 그중에 직책이 제일 많이 바뀐 10사람의 정보를 보여주세요.
+SELECT * FROM titles;
+SELECT emp_no, COUNT(title) FROM titles GROUP BY emp_no ORDER BY 2 DESC limit 10;
+-- 각 사원별로 평균연봉 출력하되 50,000불 이상인 직원만 출력
+SELECT emp_no, AVG(salary) FROM salaries GROUP BY emp_no HAVING AVG(salary) > 50000;
+
+
+-- ##조인(join)
+-- Primary Key(PK) 와 Foreign Key(FK) 값의 연관에 의해 JOIN이 성립
+desc dept;
+-- emp e, dept d 별칭을 정한 것
+-- equijoin : =(equal) 연산자를 사용하는 조인
+SELECT e.EMPNO, e.ENAME, e.DEPTNO, d.DNAME FROM emp e, dept d WHERE e.deptno = d.deptno;
+
+UPDATE emp set DEPTNO = null WHERE empno = 7839;
+
+SELECT * FROM salgrade;
+SELECT E.EMPNO, E.ENAME, E.SAL, S.GRADE FROM emp e, salgrade s WHERE E.SAL BETWEEN S.LOSAL AND S.HISAL;
+
+-- NATURAL JOIN은 조건을 직접적으로 주지않아도 알아서 join이 된다. 똑같은 값이 있으면 합쳐버린다. 하지만, 구조가 정말 잘잡힐때만 사용.
+SELECT E.EMPNO, E.ENAME, E.DEPTNO, D.DNAME FROM emp E NATURAL JOIN dept D;
+-- USING JOIN
+SELECT E.EMPNO, E.ENAME, E.DEPTNO, D.DNAME FROM emp E JOIN dept D USING(deptno);
+-- JOIN ON
+SELECT E.EMPNO, E.ENAME, E.DEPTNO, D.DNAME FROM emp E JOIN dept D ON (E.deptno = D.deptno);
+-- OUTER JOIN(LEFT, RIGHT 가능) NULL값이어도 포함되는 부서가 있다면 표시할 때 사용할 수 있음.
+SELECT E.EMPNO, E.ENAME, E.DEPTNO, D.DNAME FROM emp E LEFT OUTER JOIN dept D USING(deptno);
