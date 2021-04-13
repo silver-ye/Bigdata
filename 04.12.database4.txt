@@ -1,0 +1,23 @@
+04.12.월 database4
+
+-- CMD랑 WORKBENCH랑은 다른 세션을 가지고있다고 생각해야한다. 삽입을 각 세션에서 하면 곧장 적용되지 않는다고 생각하면 된다.
+INSERT member values(null,'Lee@nate.com','4444','chio','200',default);
+SELECT * FROM member;
+-- 자동으로 commit이란 명령어를 실해시키는 것이다. 수행하자마자 바로 반영해달라고 하는거라고 생각하면 된다.
+-- 데이터가 막 바뀌면 안되기때문에 자동으로 되어있지않다. 하나의 트렌잭션에서 묶인 친구들은 하나의 덩어리로 틀어지면 앞에 단위까지 다 취소된다.
+-- 트렌잭션: 나눌 수 없는 조각 반영해줘: commit 취소해줘: rollback
+-- SET autocommit = 1; 로 변경하면 원래대로 0으로 변경하면 자동저장이 된다.
+-- SET sql_safe_update = 1;로 세이프 모드를 켜놓기 
+-- TRUNCATE member => member에 들어있는 모든 데이터를 날려버린다. 아무리 ROLLBACK을 해도 돌아오지 않는다.
+-- DELETE로 지우고 나서 ROLLBACK하면 되돌릴 수 있다. DELETE는 트랜젝션에 걸려있어서 ROLLBACK이 가능하다. 삭제는 가능하지만, 기억을 하고 있다.
+SET autocommit = 1;
+SET sql_safe_update = 1;
+COMMIT;
+-- 다시 되돌리기
+ROLLBACK;
+
+-- member_id = 2번의 이메일을 변경하기
+-- 세션을 변경중이면 dbs는 다른 섹션에게 락을 걸고 원래 사용되었던 섹션이 다 끝날때까지 기다린다.
+update member set email = 'test@nate.com' where member_id = 2;
+-- rollback에서는 save point라는 걸 지정할 수 있다. 나중에 rollback할 때, 그부분까지만 취소가 가능하다.
+
