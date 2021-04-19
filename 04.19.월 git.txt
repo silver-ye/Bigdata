@@ -1,0 +1,140 @@
+04.19.월 Git
+
+git bash
+-----------------------------------
+cmd랑은 조금씩 다를 수 있다.
+pwd :현재 디렉토리를 나타낸다.
+ctrl + : 글씨 크기가 커진다.
+mkdir : 만들어달라는 의미이다. ex) mkdir test : test라는 폴더를 생성하라는 의미이다.
+ls -a : 숨겨진 파일들까지 모두 볼 수 있다.
+cd.. : 한 단계(상위폴더)위로 올라간다.
+
+# 설정들을 불러와서 볼 수 있다.
+git config --global core.editor "code"
+$ git config --global -e
+
+# user 이름을 변경하기
+$ git config --global user.name "이름"
+
+# user 이메일을 변경하기
+git config --global user.email "이메일"
+
+# 운영체제의 따라서 달라지는데 알아서 되는 값을 설명하기
+git config --list안의 core.autocrlf = true 값이 있는지 확인한다.
+
+# 내용을 추가해보기
+echo 추가내용 >> 추가할곳
+cat 추가한곳 으로 내용까지 확인이 가능하다.
+
+------------------------------------------
+
+* git 실행해보기
+
+1) git for widows에서 다운받아서 설치하기
+
+2) 설치하고 git bash 사용하기
+리눅스랑 같은 명령어를 사용한다.
+
+3) c드라이브안에 들어가서 dev라는 폴더를 생성한다.
+
+4) visual studion code를 다운받는다.
+
+5) sourcetree를 다운받는다.
+
+6) github에 가입을 한다.
+
+7) vscode에서 보기 -> 명령팔레트 -> code를 치고 clear code를 선택하면 git bash에서 code를 치면 vscode가 연결된다.
+
+8) bash에서 저장소할 폴더 안으로 들어가서 git init을 하면 저장소가 설정된다.
+
+9) 파일을 만들기
+직접 만드는것 뿐마이 아니라 bash를 이용해서도 만들 수 있다.
+echo 내용 > 파일이름
+ex) echo Hello World! > b.txt
+git안에 3개의 a,b,c폴더를 만들어주기
+
+10) 내용을 확인해보기
+git status 라는 입력어를 입력하면 git에 관한 상태를 알아볼 수가 있다.
+git status -s로 좀 더 간추려서 볼 수 있다.
+
+11-1) git에 add해서 tracked로 rm --cached 로 untracked로 변경할 수 있다.
+git add a.txt(a.txt를 스테이지안에 넣어서 tracked로 변경)
+git rm --cached a.txt(a.txt를 untracked로 변경)
+
+11-2) 소스트리를 사용해서도 올릴 수 있다.
+선택해서 스테이시 올리기 내리기도 가능하고 안에 내용들도 확인할 수 있다.
+
+12) a.txt의 내용을 바꾸면 modified로 되는데 이건 git bash랑 소스트리에서도 확인 할 수 있다.
+아직 a를 다시 add하지않았으면 바뀌지는 않은 것이다. 수정된 상태만 나타내준다.
+
+13) commit으로 로컬레 올리기
+git commit -m "메시지"
+소스트리에서는 커밋하기
+
+14) commit한것을 확인하기 
+git log를 통해서 누가 했는지 언제했는지에 대해서도 알 수 있다.
+소스트리에서 history에서 확인할 수 있다.
+
+15) github에 새로운 reopsitory를 만들고 생성후 나오는 그 안에 두번째 라인들을 복사해서
+한 문장씩 실행시켜준다.(branch)
+git remote add origin https://github.com/silver-ye/funny_blog.git
+git branch -M main
+git push -u origin main # github에 push로 보낸다. git push라고만 쳐도 push가 가능하다.
+하면 github랑 연결된것을 알 수 있다.
+
+16) 한꺼번에 하기
+git add . (.을 통해서 delected되고 알아서 add된다)
+.은 현재 디렉토리를 의미하고, *는 디렉토리 안의 있는 것들을 의미한다.
+*은 보통 
+ex) 디렉토리안을 다 하나씩 보면서 txt인거를 할거야하면 git add * .txt 이런식으로 사용한다.
+
+17) 올리지 말아야할 파일을 지정하기
+echo 올리지말아야할 파일 > .gitignore
+# 트레킹을 안하는 것을 볼 수 있다.
+
+* 만약에 집에가서 사용하고 싶다면 clone
+1) get clone 주소
+github에 들어가면 code -> clone http주소를 복사해서 붙여주면 된다.
+주소를 통해서 아무 github나 불러들어올 수 있다.
+
+* branch
+가지를 뻗어서 사용할 수 있다. 메인에 지장이 안가도록 사용할 수 있고 합칠 수도 있는데 그럴 때는 merge를 사용한다.
+ex) 새로운 기능을 만들고 싶은데 실패할 수도 있고 수정도 해야해서 브랜치를 통해서 새로운 가지를 뻗어서 진행하다가
+성공하면 메인과 병합을 시키면 된다.
+git저장소를 만들면 main브랜치가 만들어진다.
+
+branch를 만들고 싶으면,
+# git branch branch명으로 생성
+git branch hello_teacher
+
+# 확인할 브랜치나 메인을 선택하면 된다.
+git checkout hello_teacher
+브랜치와 메인은 따로 관리가 된다.
+
+# 브랜치로 push보내기
+git push origin hello_teacher
+
+# 브랜치로 push확인하기
+github에 들어가서 mian이 아닌 브랜치로 변경해서 들어가면 확인할 수 있다.
+
+# push는 밀어넣는거고 pull은 땡겨오는 것이다. git 연결에 너무 긴 주소대신 origin으로 대신하는 것이다.
+# hello_teacher 브랜치를 땡겨오겠다는 애기이다.
+git pull origin hello_teacher
+
+# merge하기
+git merge 브랜치명
+merge한다고 push되지는 않으니 해줘야한다.
+git push 도 진해해야한다.
+-u옵션을 통해서 origin을 사용한다.
+
+* fortk하기
+저장소는 똑같이 복사해서 나의 저장소에 따로 만드는 것을 의미한다.
+
+* 서로 공통된 것 안에 내용이 달라져서 충돌될 떄
+충돌되는 내용중에 어떤 내용을 남길지를 정하고 정한 내용을 저장하고 다시 add하고 commit해주면 된다.
+
+* 초대하기
+setting -> manage access -> invite collaborator
+
+
+
