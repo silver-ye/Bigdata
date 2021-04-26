@@ -1,0 +1,76 @@
+04.26.월 빅_플렛폼5
+
+빅데이터프로_강의교안_프로젝트 포함(p315)
+
+Hive
+
+데이터 저장에는 Hadoop의 HDFS, 분산처리에는 Spark, SQL 사용에는 Hive와 Presto를 사용하면 데이터 처리의 효율성이 극대화된다.
+
+334 실습준비
+<hive에서 테이블 만들고, names.csv 파일의 내용 조회 실습>
+
+1. 서비스 재시작: HDFS, Hive, Yam, Zookeeper 재시작
+                       나머지 서비스 중지
+2. 내컴퓨터 data 폴더의 names.scv를 HDFS에 업로드(강의 프로젝트포함ppt 337p)
+3. hive 실행(강의 프로젝트포함ppt 338p)
+4. names.csv 를 분석함 hive테이블 names_txt 생성(강의 프로젝트포함ppt 339p~340p)
+5. names.csv 테이블에 names.csv의 내용이 insert되었나 확인(강의 프로젝트포함ppt 341p)
+
+CREATE EXTERNAL TABLE IF NOT EXISTS Names_text(
+EmployeeID INT,
+FirstName STRING,
+Title STRING,
+State STRING,
+Laptop STRING)
+COMMENT 'Employee Names'
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+STORED AS TEXTFILE
+location '/user/hdfs/names';
+
+<Hive 이용해서 상품평 게시판 분석해서 평점이 낮은 물건 찾고 평점이 낮은 이유 알아내기>
+1. http://server01.hadoop.com:7180 접속해서 HDFS, Hive, Yam, Zookeeper재시작, 나머지 서비스는 정지하기
+2. HDFS에 csv파일 업로드할 폴더 생성(강의 프로젝트포함 335p)
+3. 평점이 낮은 물건 조회하고 평점에서 가장 많이 나오는 단어 조회(강의 프로젝트포함 345p~374p)
+4. 평점이 낮은 물건의 가격 정보 조회(강의 프로젝트포함 375p~382p)
+
+CREATE EXTERNAL TABLE IF NOT EXISTS ratings
+(
+posted timestamp,
+cust_id int,
+prod_id int,
+rating tinyint,
+message string
+)
+row format delimited
+fields terminated by '\t'
+STORED AS TEXTFILE
+location '/user/cloudera/ratings/';
+
+select distinct message
+from ratings
+where prod_id = 1274673 and message like '%ten times more%'
+limit 10;
+
+select distinct message
+from ratings
+where prod_id = 1274673 and message like '%red%'
+limit 10;
+
+CREATE EXTERNAL TABLE IF NOT EXISTS products
+(
+prod_id string,
+brand string,
+name string,
+price int,
+cost int,
+shipping_wt int
+)
+row format delimited
+fields terminated by '\t'
+STORED AS TEXTFILE
+location '/user/cloudera/products_dualcore/';
+
+select * from products
+where name like '%16 GB USB Flash Drive%'
+and brand = 'Orion';
