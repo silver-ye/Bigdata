@@ -1,0 +1,26 @@
+05.10.월 빅데이터 처리3
+
+현재는 우리가 잘못나눠서 2가 많다.
+만약에 애초에 데이터에 2가 많다면, 
+1) 가짜로 2를 생성(oversample), 공식이 따로 있음
+2) 2랑 비율이 맞게 0,1 삭제(under sample)
+둘 중에 한가지 방법을 사용한다.
+
+<Random Forest 실습>
+1. imbalance data 의 학습
+: 강의자료 179 ~ 186 페이지 
+
+2. balace data 학습
+: 강의자료 187~188 페이지
+
+3. Random Forest 설정 중요한 컬럼 확인
+:강의자료 189~190 페이지
+
+4. Spark Random Forest 실습
+: 강의자료 192 ~215 페이지
+
+<XGBoost를 이용한 유방암 데이터 분류>
+강의자료 237 ~ 260페이지
+
+<Spark XGBoost 구현>
+Spark XGBoost 강의자료 9 ~ 49페이지
