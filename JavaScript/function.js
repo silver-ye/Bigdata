@@ -153,7 +153,7 @@ const simpleMultiply = (a, b) => {
 // Fun quiz time❤️
 // function calculate(command, a, b)
 // command: add, substract, divide, multiply, remainder
-function calculate(command, a, b) {
+function calculate(command, a, b) { // 정해진 데이터를 처리하는 것은 if문보다는 swith를 이용
     switch (command) {
         case 'add':
             return a + b;
